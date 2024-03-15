@@ -1,0 +1,17 @@
+.propos{
+    text-align: center;
+    
+}
+
+.propos h1{
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 100px;
+    color: rgb(255, 10, 10);
+    font-weight: 450;
+}
+
+.propos p{
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 35px;
+}
+
