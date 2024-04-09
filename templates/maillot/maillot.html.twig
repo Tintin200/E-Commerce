@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+	{{parent()}}Achats de Maillots Authentiques
+{% endblock %}
+{% block body %}
+	<div class="maillots">
+		<h1 class="text-center text-primary mt-2 pt-2 display-1 fw-bold">
+			Une Séléction de Maillots
+		</h1>
+	</div>
+	<div class="row justify-content-center pt-5">
+		<div>
+			<div class="card-group g-4 pt-4">
+				<div class="row row-cols-2 row-cols-md-5 g-4 pt-4">
+					{% for maillot in maillots %}
+						<div class="col">
+							<div class="card">
+								{% set image ='images/'~ maillot.image %}
+								<img src="{{asset(image)}}" class="card-img-top" alt="...">
+								<div class="card-body">
+									<h5 class="card-title">{{maillot.nom}}</h5>
+									<p class="card-text">{{maillot.description}}</p>
+									<h5 class="card-title text-white">{{maillot.prix}}€</h5>
+									<a class="btn btn-primary" role="button"><i class="bi bi-cart"></i></a>
+									{% if is_granted ('IS_AUTHENTICATED_FULLY') %}
+									{% if maillot in app.user.adorer %}
+									<a class="btn btn-warning" href="{{path('app_adorer_maillot',{'id':maillot.id})}}" role="button"><i class="bi bi-heart-fill" title="adorer"></i></a>
+									{% else %}
+									<a class="btn btn-warning" href="{{path('app_adorer_maillot',{'id':maillot.id})}}" role="button"><i class="bi bi-heart" title="adorer"></i></a>
+									{% endif %}
+									{% endif %}
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

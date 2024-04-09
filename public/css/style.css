@@ -1,6 +1,5 @@
 .propos{
     text-align: center;
-    
 }
 
 .propos h1{
@@ -13,5 +12,12 @@
 .propos p{
     font-family: 'Courier New', Courier, monospace;
     font-size: 35px;
+}
+
+.maillots h1 {
+    text-align: center;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: darkgrey;
+    font-weight: 35px;
 }
 

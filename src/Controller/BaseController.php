@@ -16,19 +16,11 @@ class BaseController extends AbstractController
         ]);
     }
 
-    #[Route('/box', name: 'app_box')]
-    public function box(): Response
-    {
-        return $this->render('base/box.html.twig', [
-
-        ]);
-    }
-
     #[Route('/about', name: 'app_about')]
     public function about(): Response
     {
         return $this->render('base/about.html.twig', [
-
+            
         ]);
     }
 }
