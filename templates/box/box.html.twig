@@ -15,6 +15,11 @@
 				<div class="card-body">
 					<h5 class="card-title">{{box.nom}}</h5>
 					<p class="card-text">{{box.description}}</p>
+					<p>
+					{% for a in box.associerBoxes %}
+						<span class="badge text-bg-light">{{a.taille.libelle}}</span>
+					{% endfor %}
+					</p>
 					<a class="btn btn-primary" role="button">
 						<i class="bi bi-cart"></i>
 					</a>

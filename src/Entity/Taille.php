@@ -21,9 +21,13 @@ class Taille
     #[ORM\OneToMany(targetEntity: Associer::class, mappedBy: 'taille')]
     private Collection $associers;
 
+    #[ORM\OneToMany(targetEntity: AssocierBox::class, mappedBy: 'taille')]
+    private Collection $associerBoxes;
+
     public function __construct()
     {
         $this->associers = new ArrayCollection();
+        $this->associerBoxes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -67,6 +71,36 @@ class Taille
             // set the owning side to null (unless already changed)
             if ($associer->getTaille() === $this) {
                 $associer->setTaille(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AssocierBox>
+     */
+    public function getAssocierBoxes(): Collection
+    {
+        return $this->associerBoxes;
+    }
+
+    public function addAssocierBox(AssocierBox $associerBox): static
+    {
+        if (!$this->associerBoxes->contains($associerBox)) {
+            $this->associerBoxes->add($associerBox);
+            $associerBox->setTaille($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAssocierBox(AssocierBox $associerBox): static
+    {
+        if ($this->associerBoxes->removeElement($associerBox)) {
+            // set the owning side to null (unless already changed)
+            if ($associerBox->getTaille() === $this) {
+                $associerBox->setTaille(null);
             }
         }
 

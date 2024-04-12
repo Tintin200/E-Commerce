@@ -31,9 +31,6 @@ class Maillot
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'adorer')]
     private Collection $users;
 
-    #[ORM\Column]
-    private ?float $prix = null;
-
     public function __construct()
     {
         $this->associers = new ArrayCollection();
@@ -134,18 +131,6 @@ class Maillot
         if ($this->users->removeElement($user)) {
             $user->removeAdorer($this);
         }
-
-        return $this;
-    }
-
-    public function getPrix(): ?float
-    {
-        return $this->prix;
-    }
-
-    public function setPrix(float $prix): static
-    {
-        $this->prix = $prix;
 
         return $this;
     }

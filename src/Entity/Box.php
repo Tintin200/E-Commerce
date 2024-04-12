@@ -31,13 +31,14 @@ class Box
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'adorerBox')]
     private Collection $users;
 
-    #[ORM\Column]
-    private ?float $prix = null;
+    #[ORM\OneToMany(targetEntity: AssocierBox::class, mappedBy: 'box')]
+    private Collection $associerBoxes;
 
     public function __construct()
     {
         $this->associers = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->associerBoxes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -138,14 +139,32 @@ class Box
         return $this;
     }
 
-    public function getPrix(): ?float
+    /**
+     * @return Collection<int, AssocierBox>
+     */
+    public function getAssocierBoxes(): Collection
     {
-        return $this->prix;
+        return $this->associerBoxes;
     }
 
-    public function setPrix(float $prix): static
+    public function addAssocierBox(AssocierBox $associerBox): static
     {
-        $this->prix = $prix;
+        if (!$this->associerBoxes->contains($associerBox)) {
+            $this->associerBoxes->add($associerBox);
+            $associerBox->setBox($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAssocierBox(AssocierBox $associerBox): static
+    {
+        if ($this->associerBoxes->removeElement($associerBox)) {
+            // set the owning side to null (unless already changed)
+            if ($associerBox->getBox() === $this) {
+                $associerBox->setBox(null);
+            }
+        }
 
         return $this;
     }

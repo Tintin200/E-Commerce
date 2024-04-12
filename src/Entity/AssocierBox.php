@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\AssocierRepository;
+use App\Repository\AssocierBoxRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: AssocierRepository::class)]
-class Associer
+#[ORM\Entity(repositoryClass: AssocierBoxRepository::class)]
+class AssocierBox
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -19,12 +19,10 @@ class Associer
     #[ORM\Column]
     private ?int $stock = null;
 
-    #[ORM\ManyToOne(inversedBy: 'associers')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Maillot $maillot = null;
+    #[ORM\ManyToOne(inversedBy: 'associerBoxes')]
+    private ?Box $box = null;
 
-    #[ORM\ManyToOne(inversedBy: 'associers')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(inversedBy: 'associerBoxes')]
     private ?Taille $taille = null;
 
     public function getId(): ?int
@@ -56,14 +54,14 @@ class Associer
         return $this;
     }
 
-    public function getMaillot(): ?Maillot
+    public function getBox(): ?Box
     {
-        return $this->maillot;
+        return $this->box;
     }
 
-    public function setMaillot(?Maillot $maillot): static
+    public function setBox(?Box $box): static
     {
-        $this->maillot = $maillot;
+        $this->box = $box;
 
         return $this;
     }
