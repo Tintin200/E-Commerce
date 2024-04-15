@@ -34,11 +34,15 @@ class Box
     #[ORM\OneToMany(targetEntity: AssocierBox::class, mappedBy: 'box')]
     private Collection $associerBoxes;
 
+    #[ORM\OneToMany(targetEntity: Inserer::class, mappedBy: 'box', orphanRemoval: true)]
+    private Collection $inserers;
+
     public function __construct()
     {
         $this->associers = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->associerBoxes = new ArrayCollection();
+        $this->inserers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -163,6 +167,36 @@ class Box
             // set the owning side to null (unless already changed)
             if ($associerBox->getBox() === $this) {
                 $associerBox->setBox(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Inserer>
+     */
+    public function getInserers(): Collection
+    {
+        return $this->inserers;
+    }
+
+    public function addInserer(Inserer $inserer): static
+    {
+        if (!$this->inserers->contains($inserer)) {
+            $this->inserers->add($inserer);
+            $inserer->setBox($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInserer(Inserer $inserer): static
+    {
+        if ($this->inserers->removeElement($inserer)) {
+            // set the owning side to null (unless already changed)
+            if ($inserer->getBox() === $this) {
+                $inserer->setBox(null);
             }
         }
 

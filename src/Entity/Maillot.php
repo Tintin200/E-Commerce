@@ -31,10 +31,14 @@ class Maillot
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'adorer')]
     private Collection $users;
 
+    #[ORM\OneToMany(targetEntity: Inserer::class, mappedBy: 'maillot', orphanRemoval: true)]
+    private Collection $inserers;
+
     public function __construct()
     {
         $this->associers = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->inserers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -130,6 +134,36 @@ class Maillot
     {
         if ($this->users->removeElement($user)) {
             $user->removeAdorer($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Inserer>
+     */
+    public function getInserers(): Collection
+    {
+        return $this->inserers;
+    }
+
+    public function addInserer(Inserer $inserer): static
+    {
+        if (!$this->inserers->contains($inserer)) {
+            $this->inserers->add($inserer);
+            $inserer->setMaillot($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInserer(Inserer $inserer): static
+    {
+        if ($this->inserers->removeElement($inserer)) {
+            // set the owning side to null (unless already changed)
+            if ($inserer->getMaillot() === $this) {
+                $inserer->setMaillot(null);
+            }
         }
 
         return $this;
