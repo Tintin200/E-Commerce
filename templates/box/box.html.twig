@@ -15,12 +15,14 @@
 				<div class="card-body">
 					<h5 class="card-title">{{box.nom}}</h5>
 					<p class="card-text">{{box.description}}</p>
-					<p>
-					{% for a in box.associerBoxes %}
-						<span class="badge text-bg-light">{{a.taille.libelle}}</span>
-					{% endfor %}
-					</p>
-					<a class="btn btn-primary" role="button">
+					{% if is_granted ('IS_AUTHENTICATED_FULLY') %}
+						<p>
+							{% for a in box.associerBoxes %}
+								<span class="badge text-bg-light">{{a.taille.libelle}}</span>
+							{% endfor %}
+						</p>
+					{% endif %}
+					<a class="btn btn-primary" role="button" href="{{path('app_ajout_panier',{'id':box.id})}}">
 						<i class="bi bi-cart"></i>
 					</a>
 					{% if is_granted ('IS_AUTHENTICATED_FULLY') %}

@@ -40,4 +40,39 @@ class BoxController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    #[Route('/supprimer-article/{id}', name:'app_supprimer_article')]
+    public function supprimerArticle(Request $request, Box $box, EntityManagerInterface $em): Response
+    {
+        if($box!=null){
+            $em->remove($box);
+            $em->flush();
+            $this->addFlash('notice','box supprimé');
+        }
+        return $this->redirectToRoute('app_liste_futurs_articles');
+    }
+
+    #[Route('/private-ajout-panier/{id}', name:'app_ajout_panier')]
+    public function ajoutPanier(Request $request, Box $box, EntityManagerInterface $em): Response
+    {
+        if($box!=null){
+            if($this->getUser()->getPanier()==null){
+                $panier = new Panier();
+            } else {
+                $panier = $this->getUser()->getPanier();
+            }
+            $inserer = new Inserer();
+            $inserer->setPanier($panier);
+            $inserer->setBox($box);
+            $inserer->setQuantite(1);
+            $panier->addInserer($inserer);
+            $this->getUser()->setPanier($panier);
+            $em->persist($inserer);
+            $em->persist($panier);
+            $em->persist($this->getUser());
+            $em->flush();
+            $this->addFlush('notice','produit ajouté');
+        }
+        return $this->redirectToRoute('app_box');
+    }
 }

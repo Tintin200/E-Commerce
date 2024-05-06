@@ -32,36 +32,46 @@
 											<div id="flush-collapse{{maillot.id}}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample{{maillot.id}}">
 												<div class="accordion-body">{{maillot.description}}</div>
 												{% for a in maillot %}
-												<div class="accordion-body">{{maillot.associers.prix}}</div>
+													<div class="accordion-body">{{a.associers.prix}}</div>
 												{% endfor %}
 											</div>
 										</div>
 									</div>
-										<p>
-											{% for a in maillot.associers %}
-												<span class="badge text-bg-light text-center">{{a.taille.libelle}}</span>
-											{% endfor %}
-										</p>
-										<a class="btn btn-primary" role="button">
-											<i class="bi bi-cart"></i>
-										</a>
-										{% if is_granted ('IS_AUTHENTICATED_FULLY') %}
-											{% if maillot in app.user.adorer %}
-												<a class="btn btn-warning" href="{{path('app_adorer_maillot',{'id':maillot.id})}}" role="button">
-													<i class="bi bi-heart-fill" title="adorer"></i>
-												</a>
-											{% else %}
-												<a class="btn btn-warning" href="{{path('app_adorer_maillot',{'id':maillot.id})}}" role="button">
-													<i class="bi bi-heart" title="adorer"></i>
-												</a>
-											{% endif %}
-										{% endif %}
+								</br>
+								{% if is_granted ('IS_AUTHENTICATED_FULLY') %}
+									<div class="btn-group">
+										<button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+											Tailles
+										</button>
+										<ul class="dropdown-menu dropdown-menu-end" style="">
+										{% for a in maillot.associers %}
+											<li>
+												<a class="dropdown-item" href="#">{{a.taille.libelle}}</a>
+											</li>
+										</ul>
+										{% endfor %}
 									</div>
-								</div>
+								{% endif %}
 							</div>
-						{% endfor %}
+
+							<a class="btn btn-primary" role="button" href="{{path('app_ajout_panier',{'id':maillot.id})}}">
+								<i class="bi bi-cart"></i>
+							</a>
+							{% if is_granted ('IS_AUTHENTICATED_FULLY') %}
+								{% if maillot in app.user.adorer %}
+									<a class="btn btn-warning" href="{{path('app_adorer_maillot',{'id':maillot.id})}}" role="button">
+										<i class="bi bi-heart-fill" title="adorer"></i>
+									</a>
+								{% else %}
+									<a class="btn btn-warning" href="{{path('app_adorer_maillot',{'id':maillot.id})}}" role="button">
+										<i class="bi bi-heart" title="adorer"></i>
+									</a>
+								{% endif %}
+							{% endif %}
+						</div>
 					</div>
-				</div>
+				{% endfor %}
 			</div>
 		</div>
-	{% endblock %}
+	</div>
+</div>{% endblock %}

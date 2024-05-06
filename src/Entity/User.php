@@ -41,10 +41,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Box::class, inversedBy: 'users')]
     private Collection $adorerBox;
 
+    #[ORM\ManyToMany(targetEntity: Panier::class, inversedBy: 'users')]
+    private Collection $panier;
+
     public function __construct()
     {
         $this->adorer = new ArrayCollection();
         $this->adorerBox = new ArrayCollection();
+        $this->panier = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -166,6 +170,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeAdorerBox(Box $adorerBox): static
     {
         $this->adorerBox->removeElement($adorerBox);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Panier>
+     */
+    public function getPanier(): Collection
+    {
+        return $this->panier;
+    }
+
+    public function addPanier(Panier $panier): static
+    {
+        if (!$this->panier->contains($panier)) {
+            $this->panier->add($panier);
+        }
+
+        return $this;
+    }
+
+    public function removePanier(Panier $panier): static
+    {
+        $this->panier->removeElement($panier);
 
         return $this;
     }
