@@ -40,7 +40,7 @@
 								</br>
 								{% if is_granted ('IS_AUTHENTICATED_FULLY') %}
 									<div class="btn-group">
-										<button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+										<button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
 											Tailles
 										</button>
 										<ul class="dropdown-menu dropdown-menu-end" style="">
@@ -48,13 +48,13 @@
 											<li>
 												<a class="dropdown-item" href="#">{{a.taille.libelle}}</a>
 											</li>
-										</ul>
 										{% endfor %}
+										</ul>
 									</div>
 								{% endif %}
 							</div>
 
-							<a class="btn btn-primary" role="button" href="{{path('app_ajout_panier',{'id':maillot.id})}}">
+							<a class="btn btn-primary" role="button" href="{{path('app_ajout_panier_maillot',{'id':maillot.id})}}">
 								<i class="bi bi-cart"></i>
 							</a>
 							{% if is_granted ('IS_AUTHENTICATED_FULLY') %}

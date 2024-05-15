@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+	{{parent()}}Votre Panier
+{% endblock %}
+{% block body %}
+	<h1 class="text-center text-primary mt-2 pt-2 display-1 fw-bold">Votre Panier</h1>
+	<div class="card-group g-4 pt-4">
+		<div class="row row-cols-1 row-cols-sm-3 row-cols-md-4 g-4">
+			{% for i in app.user.panier.inserers %}
+			{% if i.maillot is not null %}
+				<div class="col" style="border-radius: 25%;">
+					<div class="card pb-4 bg-secondary" style="text-align: center;">
+						<div class="card-body">
+							<h5 class="card-header text-center text-dark">{{i.maillot.nom}}</h5>
+							{% if i.maillot.image %}
+								{% set chemin = 'images/' ~ i.maillot.image %}
+								<a href="{{path('app_maillot',{'id':i.maillot.id})}}">
+									<img src="{{asset(chemin)}}" class="card-img-top">
+								</a>
+							{% endif %}
+							<p class="card-text text-dark">{{i.maillot.description}}</p>
+						</div>
+				{# <h6 class="card-footer text-center text-dark">{{a.maillot.associer.prix}}$</h6> #}
+					</div>
+				</div>
+				{% elseif i.box is not null %}
+					<div class="col" style="border-radius: 25%;">
+					<div class="card pb-4 bg-secondary" style="text-align: center;">
+						<div class="card-body">
+							<h5 class="card-header text-center text-dark">{{i.box.nom}}</h5>
+							{% if i.box.image %}
+								{% set chemin = 'images/' ~ i.box.image %}
+								<a href="{{path('app_box',{'id':i.box.id})}}">
+									<img src="{{asset(chemin)}}" class="card-img-top">
+								</a>
+
+							{% endif %}
+							<p class="card-text text-dark">{{i.box.description}}</p>
+						</div>
+				{# <h6 class="card-footer text-center text-dark">{{i.box.associer.prix}}$</h6> #}
+					</div>
+				</div>
+				
+			{% endif %}
+			{% endfor %}
+		</div>
+	</div>
+
+{% endblock %}

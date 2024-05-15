@@ -14,7 +14,7 @@ class Inserer
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'inserers')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Maillot $maillot = null;
 
     #[ORM\ManyToOne(inversedBy: 'inserers')]
@@ -22,8 +22,11 @@ class Inserer
     private ?Panier $panier = null;
 
     #[ORM\ManyToOne(inversedBy: 'inserers')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Box $box = null;
+
+    #[ORM\Column]
+    private ?int $quantite = null;
 
     public function getId(): ?int
     {
@@ -62,6 +65,18 @@ class Inserer
     public function setBox(?Box $box): static
     {
         $this->box = $box;
+
+        return $this;
+    }
+
+    public function getQuantite(): ?int
+    {
+        return $this->quantite;
+    }
+
+    public function setQuantite(int $quantite): static
+    {
+        $this->quantite = $quantite;
 
         return $this;
     }

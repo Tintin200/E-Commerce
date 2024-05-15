@@ -58,27 +58,5 @@ class MaillotController extends AbstractController
         return $this->redirectToRoute('app_liste_futurs_articles');
     }
 
-    #[Route('/private-ajout-panier/{id}', name:'app_ajout_panier')]
-    public function ajoutPanier(Request $request, Maillot $maillot, EntityManagerInterface $em): Response
-    {
-        if($maillot!=null){
-            if($this->getUser()->getPanier()==null){
-                $panier = new Panier();
-            } else {
-                $panier = $this->getUser()->getPanier();
-            }
-            $inserer = new Inserer();
-            $inserer->setPanier($panier);
-            $inserer->setMaillot($maillot);
-            $inserer->setQuantite(1);
-            $panier->addInserer($inserer);
-            $this->getUser()->setPanier($panier);
-            $em->persist($inserer);
-            $em->persist($panier);
-            $em->persist($this->getUser());
-            $em->flush();
-            $this->addFlush('notice','produit ajouté');
-        }
-        return $this->redirectToRoute('app_maillot');
-    }
+    
 }

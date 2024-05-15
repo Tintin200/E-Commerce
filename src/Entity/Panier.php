@@ -21,13 +21,17 @@ class Panier
     #[ORM\OneToMany(targetEntity: Inserer::class, mappedBy: 'panier', orphanRemoval: true)]
     private Collection $inserers;
 
-    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'panier')]
-    private Collection $users;
+
+    #[ORM\OneToMany(targetEntity: Ajouter::class, mappedBy: 'panier')]
+    private Collection $ajouters;
+
+    #[ORM\OneToOne(mappedBy: 'panier', cascade: ['persist', 'remove'])]
+    private ?User $user = null;
 
     public function __construct()
     {
         $this->inserers = new ArrayCollection();
-        $this->users = new ArrayCollection();
+        $this->ajouters = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -77,29 +81,55 @@ class Panier
         return $this;
     }
 
+
     /**
-     * @return Collection<int, User>
+     * @return Collection<int, Ajouter>
      */
-    public function getUsers(): Collection
+    public function getAjouters(): Collection
     {
-        return $this->users;
+        return $this->ajouters;
     }
 
-    public function addUser(User $user): static
+    public function addAjouter(Ajouter $ajouter): static
     {
-        if (!$this->users->contains($user)) {
-            $this->users->add($user);
-            $user->addPanier($this);
+        if (!$this->ajouters->contains($ajouter)) {
+            $this->ajouters->add($ajouter);
+            $ajouter->setPanier($this);
         }
 
         return $this;
     }
 
-    public function removeUser(User $user): static
+    public function removeAjouter(Ajouter $ajouter): static
     {
-        if ($this->users->removeElement($user)) {
-            $user->removePanier($this);
+        if ($this->ajouters->removeElement($ajouter)) {
+            // set the owning side to null (unless already changed)
+            if ($ajouter->getPanier() === $this) {
+                $ajouter->setPanier(null);
+            }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($user === null && $this->user !== null) {
+            $this->user->setPanier(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($user !== null && $user->getPanier() !== $this) {
+            $user->setPanier($this);
+        }
+
+        $this->user = $user;
 
         return $this;
     }
