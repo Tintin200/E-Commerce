@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bridge\Doctrine\ArgumentResolver\EntityValueResolver;
 
 
 class PanierController extends AbstractController
@@ -56,6 +57,7 @@ class PanierController extends AbstractController
         }
         return $this->redirectToRoute('app_panier');
     }
+
     #[Route('/private-ajout-panier-box/{id}', name:'app_ajout_panier_box')]
     public function ajoutPanierBox(Request $request, Box $box, EntityManagerInterface $em): Response
     {
@@ -76,6 +78,17 @@ class PanierController extends AbstractController
             $em->persist($this->getUser());
             $em->flush();
             $this->addFlash('notice', 'Box ajouté');
+        }
+        return $this->redirectToRoute('app_panier');
+    }
+
+    #[Route('/supprimer-panier/{id}', name: 'app_supprimer_panier')]
+    public function supprimerPanier(Request $request, Inserer $inserer, EntityManagerInterface $em): Response
+    {
+        if ($inserer!=null) {
+            $em->remove($inserer);
+            $em->flush();
+            
         }
         return $this->redirectToRoute('app_panier');
     }
